@@ -14,15 +14,16 @@ def validatechars(s: str) -> str:
     :param s:
     :return:
     """
-    s = s.replace(r"*", "_")
-    s = s.replace(r"\"", "_")
+    s = s.replace("*", "_")
+    s = s.replace("\"", "_")
     s = s.replace(r"/", "_")
     s = s.replace(r"\\", "_")
-    s = s.replace(r"<", "_")
-    s = s.replace(r">", "_")
-    s = s.replace(r":", "_")
-    s = s.replace(r"|", "_")
-    s = s.replace(r"?", "_")
+    s = s.replace("\\", "_")
+    s = s.replace("<", "_")
+    s = s.replace(">", "_")
+    s = s.replace(":", "_")
+    s = s.replace("|", "_")
+    s = s.replace("?", "_")
     return s
 
 
