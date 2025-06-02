@@ -1,11 +1,11 @@
 # Usage:
-#  .\scrape.ps1 -FromId 100 -ToId 200
+#  .\scrape.ps1 -From 100 -To 200
 # Or:
 #  .\scrape.ps1 -ListFile "missing.txt"
 
 param (
-    [int]$FromId,
-    [int]$ToId,
+    [int]$From,
+    [int]$To,
     [string]$ListFile
 )
 
@@ -16,15 +16,15 @@ if ($ListFile) {
     }
     $ids = Get-Content $ListFile | Where-Object { $_ -match '^\d+$' } | ForEach-Object { [int]$_ }
 }
-elseif ($FromId -and $ToId) {
-    if ($FromId -gt $ToId) {
-        Write-Error "FromId must be less than or equal to ToId."
+elseif ($From -and $To) {
+    if ($From -gt $To) {
+        Write-Error "From must be less than or equal to To."
         exit 1
     }
-    $ids = $FromId..$ToId
+    $ids = $From..$To
 }
 else {
-    Write-Error "You must provide either -ListFile or both -FromId and -ToId."
+    Write-Error "You must provide either -ListFile or both -From and -To."
     exit 1
 }
 
@@ -35,7 +35,7 @@ foreach ($id in $ids) {
     Write-Host "Scraping artist ID $id..."
     Set-Location $projectPath
     scrapy crawl artist -a id=$id
-    Start-Sleep -Seconds 5
+    Start-Sleep -Seconds 4
 }
 
 Write-Host "Finished scraping all requested artist IDs."

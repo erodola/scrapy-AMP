@@ -28,7 +28,7 @@ items/2313/Dune - The Sea Love of Robot.s3m
 
 ## Download all artists in a range:
 
-    .\scrape.ps1 -FromId 100 -ToId 200
+    .\scrape.ps1 -From 100 -To 200
 
 ## Download all artists from a text file (one line per id):
 
