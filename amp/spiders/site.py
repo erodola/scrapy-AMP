@@ -6,6 +6,9 @@ from urllib.parse import parse_qsl as queryparse
 import scrapy
 
 from amp.items import Tune
+from amp.pipelines import AmpPipeline
+
+import os
 
 
 class SiteSpider(scrapy.Spider):
@@ -49,20 +52,52 @@ class ArtistSpider(SiteSpider):
 
         u: SplitResult = urlsplit(response.url)
         q: dict = dict(queryparse(u.query))
-
-        for tune in response.xpath("//div[@id='result']/table/tr/th[@colspan='6']/../../tr[@class]"):
+        
+        artist_id = q['view']
+        
+        all_tunes = response.xpath("//div[@id='result']/table/tr/th[@colspan='6']/../../tr[@class]")
+        
+        print("")
+        print("ALL TUNES:")
+        for tune in all_tunes:
             artist = "".join(tune.xpath("./td[2]//text()").getall()).strip()
             title = "".join(tune.xpath("./td[1]//text()").getall()).strip()
-            link = tune.xpath("./td[1]/a/@href").get().strip()
+            print(f"{artist} - {title}")
+        print("")
+
+        for tune in all_tunes:
+            artist = "".join(tune.xpath("./td[2]//text()").getall()).strip()
+            title = "".join(tune.xpath("./td[1]//text()").getall()).strip()
+            
+            # Check for missing download link (some artists requested links to be removed)
+            
+            try:
+                link = tune.xpath("./td[1]/a/@href").get().strip()
+            except AttributeError:
+                print(f"Can not retrieve download link for '{artist} - {title}', tune will be skipped.")
+                continue
+                
             fileformat = "".join(tune.xpath("./td[3]//text()").getall()).strip().lower()
+            
+            # Skip file if it had already been downloaded
+            
+            filename = AmpPipeline.get_filename(artist=artist, title=title, format=fileformat)
+            
+            basepath = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'items'))
+            basepath = os.path.join(basepath, artist_id)
+            
+            if os.path.isfile(os.path.join(basepath, filename)):
+                print(f"{filename} already exists, tune will be skipped.")
+                continue
 
             # Download tune
+            
             yield scrapy.Request(
                 response.urljoin(link),
                 callback=self.download_mod,
                 meta={
                     "tune": {
-                        "id": q['view'],
+                        "id": artist_id,
                         "artist": artist,
                         "title": title,
                         "format": fileformat,

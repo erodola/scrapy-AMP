@@ -14,14 +14,36 @@ def validatechars(s: str) -> str:
     :param s:
     :return:
     """
-
-    s = s.replace(r"\\", "_")
+    s = s.replace(r"*", "_")
+    s = s.replace(r"\"", "_")
     s = s.replace(r"/", "_")
+    s = s.replace(r"\\", "_")
+    s = s.replace(r"<", "_")
+    s = s.replace(r">", "_")
+    s = s.replace(r":", "_")
+    s = s.replace(r"|", "_")
     s = s.replace(r"?", "_")
     return s
 
 
 class AmpPipeline:
+    
+    @staticmethod
+    def get_filename(item: Item = None, artist: str = "", title: str = "", format: str = "") -> str:
+        
+        if item is not None:
+            a = validatechars(item.artist)
+            t = validatechars(item.title)
+            f = item.format
+        else:
+            a = validatechars(artist)
+            t = validatechars(title)
+            f = format
+            
+        filename = f"{a} - {t}.{f}"
+        
+        return filename
+    
     def process_item(self, item: Item, spider: scrapy.Spider):
 
         if not isinstance(item, Item):
@@ -38,11 +60,7 @@ class AmpPipeline:
             Path(basepath).mkdir(parents=True, exist_ok=True)
 
         if isinstance(item, Tune):
-            nitem = item
-            # Remove filesystem unfriendly characters
-            nitem.artist = validatechars(nitem.artist)
-            nitem.title = validatechars(nitem.title)
-            filename = f"{nitem.artist} - {nitem.title}.{nitem.format}"
+            filename = AmpPipeline.get_filename(item=item)
 
         if filename is None:
             raise ValueError("No filename")
