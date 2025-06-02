@@ -25,3 +25,15 @@ items/2313/Dune - astral ian breakside.s3m
 items/2313/Dune - Light.s3m
 items/2313/Dune - The Sea Love of Robot.s3m
 ```
+
+## Download all artists in a range:
+
+    .\scrape.ps1 -FromId 100 -ToId 200
+
+## Download all artists from a text file (one line per id):
+
+    .\scrape.ps1 -ListFile "missing.txt"
+
+## Download all *missing* artists (not found in the `items` directory) in a range:
+
+    .\scrape_missing_artists.ps1 -From 100 -To 200
