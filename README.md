@@ -30,8 +30,14 @@ items/2313/Dune - The Sea Love of Robot.s3m
 
     .\scrape.ps1 -FromId 100 -ToId 200
 
-
 ## Download all artists from a text file (one line per id):
 
     .\scrape.ps1 -ListFile "missing.txt"
 
+## Download all *missing* artists (not found in the `items` directory) in a range:
+
+    .\scrape_missing_artists.ps1 -From 100 -To 200
+
+## Download all *missing* artists from id 0 to 20000:
+
+    .\scrape.ps1 -ListFile "missing.txt"
