@@ -37,7 +37,3 @@ items/2313/Dune - The Sea Love of Robot.s3m
 ## Download all *missing* artists (not found in the `items` directory) in a range:
 
     .\scrape_missing_artists.ps1 -From 100 -To 200
-
-## Download all *missing* artists from id 0 to 20000:
-
-    .\scrape.ps1 -ListFile "missing.txt"
