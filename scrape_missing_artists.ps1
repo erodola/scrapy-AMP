@@ -1,7 +1,7 @@
 # Usage: 
-#  .\check.ps1 -From 18001 -To 19000
+#  .\scrape_missing_artists.ps1 -From 18001 -To 19000
 # Or:
-#  .\check.ps1
+#  .\scrape_missing_artists.ps1
 
 param (
     [int]$From,

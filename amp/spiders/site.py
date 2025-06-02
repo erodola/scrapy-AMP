@@ -58,7 +58,7 @@ class ArtistSpider(SiteSpider):
         all_tunes = response.xpath("//div[@id='result']/table/tr/th[@colspan='6']/../../tr[@class]")
         
         print("")
-        print("ALL TUNES:")
+        print(f"ALL TUNES (artist id {artist_id}):")
         for tune in all_tunes:
             artist = "".join(tune.xpath("./td[2]//text()").getall()).strip()
             title = "".join(tune.xpath("./td[1]//text()").getall()).strip()
