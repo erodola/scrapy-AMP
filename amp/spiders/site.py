@@ -72,7 +72,7 @@ class ArtistSpider(SiteSpider):
             try:
                 link = tune.xpath("./td[1]/a/@href").get().strip()
             except AttributeError:
-                print(f"[SKIP] Can not retrieve download link for '{artist} - {title}'.")
+                print(f"[MISS] Can not retrieve download link for '{artist} - {title}'.")
                 continue
                 
             fileformat = "".join(tune.xpath("./td[3]//text()").getall()).strip().lower()
