@@ -34,7 +34,6 @@ class ArtistSpider(SiteSpider):
         """
         :param id: Artist ID
         """
-
         if id == "":
             id = None
 
@@ -49,7 +48,6 @@ class ArtistSpider(SiteSpider):
         """
         Get list of tunes
         """
-
         u: SplitResult = urlsplit(response.url)
         q: dict = dict(queryparse(u.query))
         
@@ -74,7 +72,7 @@ class ArtistSpider(SiteSpider):
             try:
                 link = tune.xpath("./td[1]/a/@href").get().strip()
             except AttributeError:
-                print(f"Can not retrieve download link for '{artist} - {title}', tune will be skipped.")
+                print(f"[SKIP] Can not retrieve download link for '{artist} - {title}'.")
                 continue
                 
             fileformat = "".join(tune.xpath("./td[3]//text()").getall()).strip().lower()
@@ -87,7 +85,7 @@ class ArtistSpider(SiteSpider):
             basepath = os.path.join(basepath, artist_id)
             
             if os.path.isfile(os.path.join(basepath, filename)):
-                print(f"{filename} already exists, tune will be skipped.")
+                print(f"[SKIP] {filename} already exists.")
                 continue
 
             # Download tune
